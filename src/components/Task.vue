@@ -12,7 +12,6 @@
       <h1>{{ TaskData.title }}</h1>
       <h2>{{ TaskData.description }}</h2>
     </div>
-
     <div class="utility-icons">
       <i v-if="isEditing" class="uil uil-check-circle icon" @click="handleEditTask"></i>
       <i v-else class="uil uil-edit icon" @click="handleEditTask"></i>
@@ -28,6 +27,7 @@ export default {
     TaskData: Object,
     ColumnData: Object,
     taskIndex: Number,
+    
   },
   data() {
     return {
@@ -67,6 +67,11 @@ export default {
   gap: 15px;
 
   cursor: pointer;
+
+  transition: .5s;
+}
+.task-container:hover{
+  transform: translateY(5px);
 }
 
 .task-container h1, .title-input {

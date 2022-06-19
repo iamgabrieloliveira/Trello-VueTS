@@ -1,8 +1,5 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
-  />
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
   <div
     v-if="isModalVisible"
     @click="handleShowAddTaskModal"
@@ -10,7 +7,11 @@
   ></div>
   <div class="column-container">
     <div class="column-title-container">
-      <h1 class="column-title">{{ ColumnData.title }}</h1>
+      <input class="title-edit-input" v-if="isEditing" type="text" v-model="ColumnData.title" />
+      <h1 v-else class="column-title">{{ ColumnData.title }}</h1>
+      <div class="changes-buttons-container">
+      <i v-if="isEditing" class="uil uil-check-circle icon edit-btn" @click="handleEditTitleColumn"></i>
+      <i v-else class="uil uil-edit icon edit-btn" @click="handleEditTitleColumn"></i>
       <i
         v-if="isModalVisible"
         class="uil uil-times icon-btn"
@@ -21,6 +22,7 @@
         class="uil uil-plus icon-btn"
         @click="handleShowAddTaskModal"
       ></i>
+      </div>
       <div v-if="isModalVisible" class="addtask-modal">
         <div class="addtask-content">
           <input
@@ -41,8 +43,10 @@
         </div>
       </div>
     </div>
-    <div class="tasks-wrapper">
-      <Task
+    <div 
+    class="tasks-wrapper"
+    >
+      <Task 
         v-for="(task, i) in ColumnData.tasks"
         :key="i"
         :TaskData="task"
@@ -54,6 +58,7 @@
 </template>
 
 <script lang="ts">
+
 import Task from "./Task.vue";
 
 export default {
@@ -70,7 +75,7 @@ export default {
       isModalVisible: false,
       taskTitleAdd: "",
       taskDescriptionAdd: "",
-      drag: false,
+      isEditing: false,
     };
   },
   methods: {
@@ -96,6 +101,9 @@ export default {
 
       this.ColumnData.tasks.push(newTask);
     },
+    handleEditTitleColumn(){
+      this.isEditing = !this.isEditing
+    }
   },
 };
 </script>
@@ -107,9 +115,9 @@ export default {
 
   background: #f3f5f6;
 
-  padding: 15px 30px;
+  padding: 30px;
 
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 .column-title-container {
@@ -134,11 +142,13 @@ export default {
 
 .addtask-modal {
   position: absolute;
-  margin-top: 166px;
-  margin-left: -16px;
+  top: 49%;
+  left: 50%;
 
-  width: 330px;
-  height: 140px;
+  transform: translate(-50%, -50%);
+
+  width: 360px;
+  height: 150px;
 
   background: #fff;
 
@@ -147,7 +157,7 @@ export default {
 
   padding: 14px;
 
-  z-index: 1000;
+  z-index: 100000;
 }
 
 .addtask-input {
@@ -202,10 +212,19 @@ export default {
 .addtaskmodal-overlay {
   position: absolute;
   inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, .5);
 }
 
 .icon-btn {
   font-size: 22px;
+  font-weight: bolder;
+  cursor: pointer;
+  position: relative;
+  z-index: 1000;
+}
+.edit-btn{
+  font-size: 20px;
   font-weight: bolder;
   cursor: pointer;
   position: relative;
@@ -217,5 +236,23 @@ export default {
   border: 1px dashed #abc;
   margin: 5px 45px 5px 5px;
 }
+.changes-buttons-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.title-edit-input{
+  background: none;
+  border: none;
+  font-size: 25px;
+  font-weight: bolder;
+  color: #313131;
+  width: 250px;
+}
+.title-edit-input:focus{
+  outline: 0;
+  background: none;
+}
+
 </style>
 
